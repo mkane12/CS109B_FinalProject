@@ -8,6 +8,7 @@
 \usepackage{pxfonts}
 \usepackage{enumerate,verbatim,cite}
 \usepackage[margin=1in]{geometry}
+\usepackage{indentfirst}
 %\usepackage{../../tex/pythonhighlight} %https://github.com/olivierverdier/python-latex-highlighting
 
 \usepackage{fancyhdr}
@@ -77,7 +78,7 @@
 %\myTitleBox
 
 \noindent {\small{\sc{CS 109B/Stat 121B/AC 209B/CSCI 109B: Final Project} \hfill \\ \small{\sc{Glickman, Protopapas}} \hfill \\ 
-\small{\sc{Dor Baruch, Michaela Kane, David Loving, \& Brandon Walker}} \hfill \\}
+\small{\sc{Dor Baruch, Michaela Kane, David Loving, \& Brandon Walker}}}
 \begin{center}
 \section*{Cancer Diagnosis in Medical Imaging}
 \end{center}
@@ -86,7 +87,13 @@
 
 \subsection*{Problem Statement}
 
-In the treatment and prevention of cancer, early detection plays a crucial and often life-saving role. 
+In the treatment and prevention of cancer, early detection plays a crucial and often life-saving role. One of the most common methods of early cancer detection is the CT (computer tomography) scan, which is used to detect anomalies in the form of pre-cancerous or cancerous nodules in body tissue. Human radiologists then study these scans and assess the severity and danger of any irregularities they observe.
+
+However, the detection of nodules and their correct diagnosis is extremely challenging, as pre-cancerous nodules are often small, and even when they are visible, they often look like surrounding benign tissue formations [1]. In an attempt to assist radiologists, recent years have seen the development and use of neural networks to help classify CT scans and other medical images for the sake of more accurate, early diagnosis and cancer prevention.
+
+These networks are not infallible themselves, unfortunately, and there are instances in which humans place too much confidence in artificial intelligence without enough critical thought [2]. As a result, there is an increasing demand for networks with a degree of explainability: if researchers and doctors can understand why a network output what it did, or what effects certain input changes have on the output, it can be easier for them to accept or reject the network's diagnosis and make faster, more accurate assessments. 
+
+For this project, we... **TODO**
 
 \subsection*{Data Recources}
 \noindent  XXX Title of data source 1.
@@ -108,6 +115,12 @@ Description of data source 1.
 \end{enumerate}
 
 \subsection*{Literature Review}
+
+In preparation for this project, we conducted research on both image classification neural networks, as well as on the importance and history of explainability in neural networks.
+
+**TODO: explain model research most relevant to our model**
+
+A recurring theme we found during our research was that of the importance of explainability in models. According to Doshi-Velez et al., by exposing the logic behind a decision, errors can be avoided through correction, and a greater trust for the model can be built [2]. In other words, if researchers and doctors understand the "thought process" of a model,  that can allow them to use the network's output to inform their own decisions rather than dictating diagnoses. 
 
 \subsection*{Modeling Approach}
 
