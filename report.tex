@@ -127,10 +127,10 @@ A recurring theme we found during our research was that of the importance of exp
 
 \subsection*{Modeling Approach}
 
-\subsubsection*{UNet}
+\subsubsection*{U-Net}
 While many popular images segmentation algorithms generate bounding boxes for object localization, in the biomedical field, this is often not good enough. While bounding boxes provide the general location of an object, it still falls short of offering the object's exact location. Going beyond a bounding box to pixel level classification can save an enormous amount of time waiting for experts to annotate biomedical images. Additionally, many approaches require thousands of images to train. Generating this amount of training data is typically not possible in most biomedical settings. Therefore, developing an approach that can be trained on a relatively small amount of training data would be hugely beneficial.  
 
-The UNet Architecture [\ref{bib:ronneberger}] addresses each of the concerns above. The UNet localizes objects within an image at the pixel level and relies heavily on data augmentation for training, drastically reducing the amount of training data necessary to achieve good performance. 
+The U-Net Architecture [\ref{bib:ronneberger}] addresses each of the concerns above. The U-Net localizes objects within an image at the pixel level and relies heavily on data augmentation for training, drastically reducing the amount of training data necessary to achieve good performance. 
 
 \subsection*{Results and Interpretation}
 
