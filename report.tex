@@ -99,13 +99,7 @@ For this project, we attempted to address this issue of explainability in a two-
 
 \begin{enumerate}
 \item \textbf{\href{https://wiki.cancerimagingarchive.net/display/Public/LIDC-IDRI}{LUng Nodule Analysis (LUNA) CT Scans}}\\
-Contains 888 3-dimensional CT scans of patients' lungs (601 patients with diagnosed cancer, 287 without diagnosed cancer). Each 3D CT Scan consists of XXX 2D ``slices'' of 512 by 512 pixels.
-
-\begin{itemize}
-\item[-] feature set 1
-\item[-] feature set 2
-\item[-] feature set 3
-\end{itemize}
+The LUNA data we used contains 888 3-dimensional CT scans of patients' lungs (601 patients with diagnosed cancer, 287 without diagnosed cancer), where each scan has a slice thickness smaller than 2.5mm. Each 3D CT Scan consists of a variable number of 2-Dimensional ``slices'' of 512 by 512 pixels. 
 
 \item \textbf{\href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3041807}{Digital Database for Screening Mammography (DDSM) Mammographies}}
 Contains over 10,000 mammographies (4,505 with lesions, 6,206 without lesions). Also includes a csv file denoting lesion types, shapes, and pathologies (i.e. whether or not a lesion is malignant, benign, benign without callback, or unknown). 
@@ -130,13 +124,16 @@ A recurring theme we found during our research was that of the importance of exp
 \subsubsection*{U-Net}
 While many popular images segmentation algorithms generate bounding boxes for object localization, in the biomedical field, this is often not good enough. While bounding boxes provide the general location of an object, it still falls short of offering the object's exact location. Going beyond a bounding box to pixel level classification can save an enormous amount of time waiting for experts to annotate biomedical images. Additionally, many approaches require thousands of images to train. Generating this amount of training data is typically not possible in most biomedical settings. Therefore, developing an approach that can be trained on a relatively small amount of training data would be hugely beneficial.  
 
-The U-Net Architecture [\ref{bib:ronneberger}] addresses each of the concerns above. The U-Net localizes objects within an image at the pixel level and relies heavily on data augmentation for training, drastically reducing the amount of training data necessary to achieve good performance. 
+The U-Net Architecture [\ref{bib:ronneberger}] addresses each of the concerns above. The U-Net localizes objects within an image at the pixel level and relies heavily on data augmentation for training, drastically reducing the amount of training data necessary to achieve good performance.  
+
+We applied the U-Net to the LUNA Dataset \footnote{\href{http://luna16.grand-challenge.org}{LUNA16 Grand Challange}} in an attempt to automate the localization task performed by radiologists. For simplicity, we extracted a single 2-Dimensional slice from each 3-Dimensional scan. While extracting, we also used the PyLIDC \footnote{\href{https://pylidc.github.io}{https://pylidc.github.io}} Python package to generate the annotated masks for each of the extracted slices.
 
 \subsection*{Results and Interpretation}
 
 \subsection*{Conclusion and Future Work}
 - train these two networks on the same data set
 
+\pagebreak
 \subsection*{References}
 
 \begin{enumerate}
