@@ -93,7 +93,7 @@ However, the detection of nodules and their correct diagnosis is extremely chall
 
 These networks are not infallible themselves, unfortunately, and there are instances in which humans place too much confidence in artificial intelligence without enough critical thought [\ref{bib:finale}]. As a result, there is an increasing demand for networks with a degree of explainability: if researchers and doctors can understand why a network output what it did, or what effects certain input changes have on the output, it can be easier for them to accept or reject the network's diagnosis and make faster, more accurate assessments. 
 
-For this project, we attempted to address this issue of explainability in a two-step process: first, we trained a U-Net on CT Scans from LUng Nodule Analysis (LUNA) in order to create a network that could ascertain the presence of and locate lesions in lung CT Scans. We then built off of pre-trained architectures in Keras to create and train a Bayesian model using Mammographies from the Digital Database for Screening Mammography (DDSM). We use a Bayesian model here in order to enhance the explainability of our model by classifying lesion types not with point estimates, but with probability distributions. 
+For this project, we attempted to address this issue of explainability through the combination of visualization and Bayesian methods. First, we trained a U-Net on CT Scans from LUng Nodule Analysis (LUNA) in order to create a network that could ascertain the presence of and locate lesions in lung CT Scans. We then trained InceptionResNetV2, an architecture with proven success in other image recognition tasks, to classify Mammographies from the Digital Database for Screening Mammography (DDSM). In both caes, after training the large models, we make Bayesian adaptations of the model in order to provide insight into the models uncertainty and combine that with visualizations that emphasize the most salient parts of the input data.
 
 \subsection*{Data Recources}
 
@@ -119,19 +119,34 @@ In preparation for this project, we conducted research on both image classificat
 
 A recurring theme we found during our research was that of the importance of explainability in models. According to Doshi-Velez et al., by exposing the logic behind a decision, errors can be avoided through correction, and a greater trust for the model can be built [\ref{bib:finale}]. In other words, if researchers and doctors understand the ``thought process'' of a model,  that can allow them to use the network's output to inform their own decisions rather than dictating diagnoses. 
 
+Human experts often communicate not only their best opinion, but also the level of their confidence in that opinion and those of competing explainations. Bayesian models allow the opportunity to sample predictions in order to gain similar information, but the training of deep Bayesian networks is still often prohibitively difficult. However, recently it has been shown that training a network with dropout can be understood as an approximation to a deep Gaussian process and model uncertainty can be provided by sampling from such a network with dropout still active {[}\ref{ref:gal}{]}.
+
 \subsection*{Modeling Approach}
 
 \subsubsection*{U-Net}
 While many popular images segmentation algorithms generate bounding boxes for object localization, in the biomedical field, this is often not good enough. While bounding boxes provide the general location of an object, it still falls short of offering the object's exact location. Going beyond a bounding box to pixel level classification can save an enormous amount of time waiting for experts to annotate biomedical images. Additionally, many approaches require thousands of images to train. Generating this amount of training data is typically not possible in most biomedical settings. Therefore, developing an approach that can be trained on a relatively small amount of training data would be hugely beneficial.  
 
-The U-Net Architecture [\ref{bib:ronneberger}] addresses each of the concerns above. The U-Net localizes objects within an image at the pixel level and relies heavily on data augmentation for training, drastically reducing the amount of training data necessary to achieve good performance.  
+The U-Net Architecture [\ref{bib:ronneberger}] addresses each of the concerns above. The U-Net localizes objects within an image at the pixel level and responds very well to data augmentation for training, drastically reducing the amount of training data necessary to achieve good performance.
 
-We applied the U-Net to the LUNA Dataset \footnote{\href{http://luna16.grand-challenge.org}{LUNA16 Grand Challange}} in an attempt to automate the localization task performed by radiologists. For simplicity, we extracted a single 2-Dimensional slice from each 3-Dimensional scan. While extracting, we also used the PyLIDC \footnote{\href{https://pylidc.github.io}{https://pylidc.github.io}} Python package to generate the annotated masks for each of the extracted slices.
+We applied the U-Net to the LUNA Dataset \footnote{\href{http://luna16.grand-challenge.org}{LUNA16 Grand Challange}} in an attempt to automate the localization task performed by radiologists. For simplicity, we extracted a single 2-Dimensional slice from each 3-Dimensional scan. While extracting, we also used the PyLIDC \footnote{\href{https://pylidc.github.io}{https://pylidc.github.io}} Python package to generate the annotated masks for each of the extracted slices. The network then learns to reproduce the annocated mask by optimizing the Dice coefficient.
+
+Because the U-Net was trained with dropout, we can predict with dropout to draw samples from the network. Rather than provide a simple masked output, we use a combination of brightness and saturation to visually represent the mean and standard deviation of the samples at each pixel. We can also provide a visualization of the distribution per-pixel, which we do for the pixel with the highest mean score. This approach allows a medical professional to look at the output image and immediately understand where lesions are likely and other areas that may warrant their close attention.
+
+\subsubsection*{Hybrid Network}
+The search for better image-classification networks is a large on-going effort, with reference implementations of succesful entries often being provided for popular deep learning frameworks. Because our second dataset lacks annotations, we use Keras' implementation of InceptionResNetV2 to perform binary (malignant / benign) classification on entire images. Although Imagenet pre-trained weights are available for the feature-extraction (convolutional) layers, they provided exceptionally poor accuracy likely because our mamography data is dramatically different from the imagenet classes. We therefore trained the entire network from scratch.
+
+In order to gain insight into model uncertainty, we used the last pre-dense layer from the network to create new features to be used as inputs in a simple Bayesian neural network. While this is not identical to a fully-Bayesian neural network, the hybrid solution of a traditional convolutional network with a Bayesian classifier at the end still aloows us to sample from the posterior predictive distribution and therefore gain some insight into uncertainty. We augment this by also computing saliency maps with the Keras-Vis library which highlight the areas of the image that are most relevant to the models beliefs. Combined, this provides easily-digested insight into the models decision-making process.
 
 \subsection*{Results and Interpretation}
 
+\subsubsection*{U-Net}
+The U-Net visualizations frequently perform well at identifying the locations of lesions. Our sample distributions often were strongly bi-modal, identifying cases where the network finds it very credible that a particular area contains a lesion even when the most frequent prediction is that it almost certainly does not. These are very important because it provides a human expert the opportunity to look closer at such regions for the final determination.
+
+\subsubsection*{Hybrid Network}
+The ROC curve shows that this model is not especially useful as a final diagnostic tool, and the posterior predictive distributions often show a very high level of uncertainty. The saliency maps do not show especially strong responses,  also indicating that the model is still unsure of how exactly to determine classification. We believe that the model may not be an optimal one for this task or the training regime needs to be modified for better performance. However, we are satisfied that our hybrid network and saliency maps visualization have offered us insight into why the model makes mistakes and performs poorly.
+
 \subsection*{Conclusion and Future Work}
-- train these two networks on the same data set
+
 
 \pagebreak
 \subsection*{References}
