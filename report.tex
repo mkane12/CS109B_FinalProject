@@ -89,9 +89,9 @@
 
 In the treatment and prevention of cancer, early detection plays a crucial and often life-saving role. One of the most common methods of early cancer detection is the CT (computer tomography) scan, which is used to detect anomalies in the form of pre-cancerous or cancerous nodules in body tissue. Human radiologists then study these scans and assess the severity and danger of any irregularities they observe.
 
-However, the detection of nodules and their correct diagnosis is extremely challenging, as pre-cancerous nodules are often small, and even when they are visible, they often look like surrounding benign tissue formations [1]. In an attempt to assist radiologists, recent years have seen the development and use of neural networks to help classify CT scans and other medical images for the sake of more accurate, early diagnosis and cancer prevention.
+However, the detection of nodules and their correct diagnosis is extremely challenging, as pre-cancerous nodules are often small, and even when they are visible, they often look like surrounding benign tissue formations [\ref{bib:baker}]. In an attempt to assist radiologists, recent years have seen the development and use of neural networks to help classify CT scans and other medical images for the sake of more accurate, early diagnosis and cancer prevention.
 
-These networks are not infallible themselves, unfortunately, and there are instances in which humans place too much confidence in artificial intelligence without enough critical thought [2]. As a result, there is an increasing demand for networks with a degree of explainability: if researchers and doctors can understand why a network output what it did, or what effects certain input changes have on the output, it can be easier for them to accept or reject the network's diagnosis and make faster, more accurate assessments. 
+These networks are not infallible themselves, unfortunately, and there are instances in which humans place too much confidence in artificial intelligence without enough critical thought [\ref{bib:finale}]. As a result, there is an increasing demand for networks with a degree of explainability: if researchers and doctors can understand why a network output what it did, or what effects certain input changes have on the output, it can be easier for them to accept or reject the network's diagnosis and make faster, more accurate assessments. 
 
 For this project, we attempted to address this issue of explainability in a two-step process: first, we trained a U-Net on CT Scans from LUng Nodule Analysis (LUNA) in order to create a network that could ascertain the presence of and locate lesions in lung CT Scans. We then built off of pre-trained architectures in Keras to create and train a Bayesian model using Mammographies from the Digital Database for Screening Mammography (DDSM). We use a Bayesian model here in order to enhance the explainability of our model by classifying lesion types not with point estimates, but with probability distributions. 
 
@@ -99,13 +99,7 @@ For this project, we attempted to address this issue of explainability in a two-
 
 \begin{enumerate}
 \item \textbf{\href{https://wiki.cancerimagingarchive.net/display/Public/LIDC-IDRI}{LUng Nodule Analysis (LUNA) CT Scans}}\\
-Contains 888 3-dimensional CT scans of patients’ lungs (601 patients with diagnosed cancer, 287 without diagnosed cancer). Each 3D CT Scan consists of XXX 2D "slices" of 512 by 512 pixels.
-
-\begin{itemize}
-\item[-] feature set 1
-\item[-] feature set 2
-\item[-] feature set 3
-\end{itemize}
+The LUNA data we used contains 888 3-dimensional CT scans of patients' lungs (601 patients with diagnosed cancer, 287 without diagnosed cancer), where each scan has a slice thickness smaller than 2.5mm. Each 3D CT Scan consists of a variable number of 2-Dimensional ``slices'' of 512 by 512 pixels. 
 
 \item \textbf{\href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3041807}{Digital Database for Screening Mammography (DDSM) Mammographies}}
 Contains over 10,000 mammographies (4,505 with lesions, 6,206 without lesions). Also includes a csv file denoting lesion types, shapes, and pathologies (i.e. whether or not a lesion is malignant, benign, benign without callback, or unknown). 
@@ -123,27 +117,35 @@ In preparation for this project, we conducted research on both image classificat
 
 **TODO: explain model research most relevant to our model**
 
-A recurring theme we found during our research was that of the importance of explainability in models. According to Doshi-Velez et al., by exposing the logic behind a decision, errors can be avoided through correction, and a greater trust for the model can be built [2]. In other words, if researchers and doctors understand the "thought process" of a model,  that can allow them to use the network's output to inform their own decisions rather than dictating diagnoses. 
+A recurring theme we found during our research was that of the importance of explainability in models. According to Doshi-Velez et al., by exposing the logic behind a decision, errors can be avoided through correction, and a greater trust for the model can be built [\ref{bib:finale}]. In other words, if researchers and doctors understand the ``thought process'' of a model,  that can allow them to use the network's output to inform their own decisions rather than dictating diagnoses. 
 
 \subsection*{Modeling Approach}
+
+\subsubsection*{U-Net}
+While many popular images segmentation algorithms generate bounding boxes for object localization, in the biomedical field, this is often not good enough. While bounding boxes provide the general location of an object, it still falls short of offering the object's exact location. Going beyond a bounding box to pixel level classification can save an enormous amount of time waiting for experts to annotate biomedical images. Additionally, many approaches require thousands of images to train. Generating this amount of training data is typically not possible in most biomedical settings. Therefore, developing an approach that can be trained on a relatively small amount of training data would be hugely beneficial.  
+
+The U-Net Architecture [\ref{bib:ronneberger}] addresses each of the concerns above. The U-Net localizes objects within an image at the pixel level and relies heavily on data augmentation for training, drastically reducing the amount of training data necessary to achieve good performance.  
+
+We applied the U-Net to the LUNA Dataset \footnote{\href{http://luna16.grand-challenge.org}{LUNA16 Grand Challange}} in an attempt to automate the localization task performed by radiologists. For simplicity, we extracted a single 2-Dimensional slice from each 3-Dimensional scan. While extracting, we also used the PyLIDC \footnote{\href{https://pylidc.github.io}{https://pylidc.github.io}} Python package to generate the annotated masks for each of the extracted slices.
 
 \subsection*{Results and Interpretation}
 
 \subsection*{Conclusion and Future Work}
 - train these two networks on the same data set
 
+\pagebreak
 \subsection*{References}
 
 \begin{enumerate}
-\item Baker, Darren, et al. \textit{Predicting Lung Cancer Incidence from CT Imagery}. Stanford University, 2017.
+\item\label{bib:baker} Baker, Darren, et al. \textit{Predicting Lung Cancer Incidence from CT Imagery}. Stanford University, 2017.
 
-\item Doshi-Velez, Finale, et al. "Accountability of AI Under the Law: The Role of Explanation." \textit{SSRN Electronic Journal}, 2017, doi:10.2139/ssrn.3064761.
+\item\label{bib:finale} Doshi-Velez, Finale, et al. ``Accountability of AI Under the Law: The Role of Explanation.'' \textit{SSRN Electronic Journal}, 2017, doi:10.2139/ssrn.3064761.
 
-\item Gal, Yarin, and Zoubin Ghahramani. \textit{Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Learning}. University of Cambridge, 2016.
+\item\label{ref:gal} Gal, Yarin, and Zoubin Ghahramani. \textit{Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Learning}. University of Cambridge, 2016.
 
-\item He, Kaiming, et al. "Deep Residual Learning for Image Recognition." \textit{2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}, 2016, doi:10.1109/cvpr.2016.90.
+\item\label{bib:he} He, Kaiming, et al. ``Deep Residual Learning for Image Recognition.'' \textit{2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}, 2016, doi:10.1109/cvpr.2016.90.
 
-\item Ronneberger, Olaf, et al. "U-Net Convolutional Networks for Biomedical Image Segmentation." \textit{Informatik Aktuell Bildverarbeitung Für Die Medizin}, 2017, doi:10.1007/978-3-662-54345.
+\item\label{bib:ronneberger} Ronneberger, Olaf, et al. ``U-Net Convolutional Networks for Biomedical Image Segmentation.'' \textit{Informatik Aktuell Bildverarbeitung Für Die Medizin}, 2017, doi:10.1007/978-3-662-54345.
 \end{enumerate}
 
 
