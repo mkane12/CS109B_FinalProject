@@ -148,7 +148,7 @@ In other cases, the sample distribution show no ambiguity about the classificati
 In these cases the model shows certainty in the classification. This can also help a human expert to determine whether or not addition testing should be done to determine if a lesion is present. 
 
 \subsubsection*{Hybrid Network}
-From the ROC curve shown below we can conclude that this model is not especially useful as a final diagnostic tool because... \\
+From the ROC curve shown below we can conclude that this model is not especially useful as a final diagnostic tool because it struggles to achieve high rates of true positives without correspondingly high rates of false positives. \\
 \includegraphics[scale=0.5]{DDSM_ROC.png} \\
 In addition, the posterior predictive distributions often show a very high level of uncertainty. The saliency maps do not show especially strong responses,  also indicating that the model is still unsure of how exactly to determine classification as can be seen in the following example: \\
 \includegraphics[scale=0.5]{hybrid_model_confusion.png} \\
