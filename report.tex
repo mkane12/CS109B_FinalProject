@@ -148,7 +148,11 @@ In other cases, the sample distribution show no ambiguity about the classificati
 In these cases the model shows certainty in the classification. This can also help a human expert to determine whether or not addition testing should be done to determine if a lesion is present. 
 
 \subsubsection*{Hybrid Network}
-The ROC curve shows that this model is not especially useful as a final diagnostic tool, and the posterior predictive distributions often show a very high level of uncertainty. The saliency maps do not show especially strong responses,  also indicating that the model is still unsure of how exactly to determine classification. We believe that the model may not be an optimal one for this task or the training regime needs to be modified for better performance. However, we are satisfied that our hybrid network and saliency maps visualization have offered us insight into why the model makes mistakes and performs poorly.
+From the ROC curve shown below we can conclude that this model is not especially useful as a final diagnostic tool because... \\
+\includegraphics[scale=0.5]{DDSM_ROC.png} \\
+In addition, the posterior predictive distributions often show a very high level of uncertainty. The saliency maps do not show especially strong responses,  also indicating that the model is still unsure of how exactly to determine classification as can be seen in the following example: \\
+\includegraphics[scale=0.5]{hybrid_model_confusion.png} \\
+We believe that the model may not be an optimal one for this task or the training regime needs to be modified for better performance. However, we are satisfied that our hybrid network and saliency maps visualization have offered us insight into why the model makes mistakes and performs poorly.
 
 \subsection*{Conclusion and Future Work}
 The use of Bayesian methods with deep learning models helps yield insights into the network's process and enhances the explainability of the model's predictions. The ability to localize and classify biomedical anomalies has the potential to improve the quality of patient care dramatically, and ultimately a patient's health outcome.
