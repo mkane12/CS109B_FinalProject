@@ -133,7 +133,19 @@ To gain insight into model uncertainty, we used the last pre-dense layer from th
 \subsection*{Results and Interpretation}
 
 \subsubsection*{U-Net}
-The U-Net visualizations frequently perform well at identifying the locations of lesions. Our sample distributions often were strongly bi-modal, identifying cases where the network finds it very credible that a particular area contains a lesion even when the most frequent prediction is that it almost certainly does not. These are very important because it provides a human expert the opportunity to look closer at such regions for the final determination.
+The U-Net visualizations frequently perform well at identifying the locations of lesions. Our sample distributions often were strongly bi-modal, identifying cases where the network finds it very credible that a particular area contains a lesion even when the most frequent prediction is that it almost certainly does not. These are very important because it provides a human expert the opportunity to look closer at such regions for the final determination. The following image demonstrate this point. \\
+
+\includegraphics[scale=0.5]{conflicted_no_nodule.png} \\
+
+As can be seen in the image, although the model probably would have classified the image as not having a lesion, we can see that the sample distribution in this case contributes significant information and might make a human expert to take a closer look into the image and perhaps what the model had missed. \\
+
+In other cases, the sample distribution show no ambiguity about the classification. For example, we can see this behavior in the following cases: \\
+
+\includegraphics[scale=0.5]{Certain_no_nodule.png} \\
+
+\includegraphics[scale=0.5]{sure_there_is_nodule.png} \\
+
+In these cases the model shows certainty in the classification. This can also help a human expert to determine whether or not addition testing should be done to determine if a lesion is present. 
 
 \subsubsection*{Hybrid Network}
 The ROC curve shows that this model is not especially useful as a final diagnostic tool, and the posterior predictive distributions often show a very high level of uncertainty. The saliency maps do not show especially strong responses,  also indicating that the model is still unsure of how exactly to determine classification. We believe that the model may not be an optimal one for this task or the training regime needs to be modified for better performance. However, we are satisfied that our hybrid network and saliency maps visualization have offered us insight into why the model makes mistakes and performs poorly.
