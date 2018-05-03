@@ -108,9 +108,7 @@ Contains over 10,000 mammographies (4,505 with lesions, 6,206 without lesions). 
 
 \subsection*{Literature Review}
 
-In preparation for this project, we conducted research on both image classification neural networks, as well as on the importance and history of explainability in neural networks.
-
-**TODO: explain model research most relevant to our model**
+In preparation for this project, we conducted research on both image classification neural networks, as well as on the importance and history of explainability in neural networks. In the U-Net segmentation model, what exactly one means when referring to the explainability model is can vary greatly. Unlike a standard classification model, for which one may be interested in why a model chooses a certain class, the U-Net model outputs a mask that points you to the area of the image in question. In essence, the model is telling us what part of the image is suspect. In that sense, the model explains itself. Further, with the addition of the Bayesian methods we applied, we can quantify our confidence in the nodule location.
 
 A recurring theme we found during our research was that of the importance of explainability in models. According to Doshi-Velez et al., by exposing the logic behind a decision, errors can be avoided through correction, and a higher level of trust for the model can be built [\ref{bib:finale}]. In other words, if researchers and doctors understand the ``thought process'' of a model,  that can allow them to use the network's output to inform their own decisions rather than dictating diagnoses. 
 
