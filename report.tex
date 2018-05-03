@@ -139,7 +139,13 @@ The U-Net visualizations frequently perform well at identifying the locations of
 The ROC curve shows that this model is not especially useful as a final diagnostic tool, and the posterior predictive distributions often show a very high level of uncertainty. The saliency maps do not show especially strong responses,  also indicating that the model is still unsure of how exactly to determine classification. We believe that the model may not be an optimal one for this task or the training regime needs to be modified for better performance. However, we are satisfied that our hybrid network and saliency maps visualization have offered us insight into why the model makes mistakes and performs poorly.
 
 \subsection*{Conclusion and Future Work}
+The use of Bayesian methods with deep learning models helps yield insights into the network's process and enhances the explainability of the model's predictions. The ability to localize and classify biomedical anomalies has the potential to improve the quality of patient care dramatically, and ultimately a patient's health outcome.
 
+By assisting Radiologists with analyzing biomedical images, and giving them the ability to utilize the recolored images and the probability distributions generated from them, physicians can reach confident decisions more quickly. 
+
+In the future, we would like to apply both the U-Net and Inception ResNet to the same dataset and analyze the results. Due to time constraints and data availability, we were unable to find a dataset that were viable for both approaches. With additional work, a single dataset could be engineered and be used to analyze how the networks can work together.
+
+Additionally, expanding the U-Net to operate on 3D images rather than extract 2D slices would be highly beneficial. By extracting the 2-Dimensional slices, we lose the information that could be provided by the adjacent pixels in neighboring slices. Being able to take advantage of that additional information would likely improve the performance of U-Net segmentation.
 
 \pagebreak
 \subsection*{References}
